@@ -1,4 +1,4 @@
-package com.aryan.omybott.Entities;
+package com.aryan.omybott.entities;
 
 import com.aryan.omybott.enums.MessageRole;
 import jakarta.persistence.*;

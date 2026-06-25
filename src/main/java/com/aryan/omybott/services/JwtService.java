@@ -1,6 +1,6 @@
 package com.aryan.omybott.services;
 
-import com.aryan.omybott.Entities.User;
+import com.aryan.omybott.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

@@ -1,4 +1,4 @@
-package com.aryan.omybott.Entities;
+package com.aryan.omybott.entities;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;

@@ -1,6 +1,6 @@
 package com.aryan.omybott.repositories;
 
-import com.aryan.omybott.Entities.User;
+import com.aryan.omybott.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

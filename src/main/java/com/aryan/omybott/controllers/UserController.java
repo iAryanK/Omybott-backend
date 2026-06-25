@@ -1,6 +1,6 @@
 package com.aryan.omybott.controllers;
 
-import com.aryan.omybott.Entities.User;
+import com.aryan.omybott.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;

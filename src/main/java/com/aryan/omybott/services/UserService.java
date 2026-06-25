@@ -1,6 +1,6 @@
 package com.aryan.omybott.services;
 
-import com.aryan.omybott.Entities.User;
+import com.aryan.omybott.entities.User;
 import com.aryan.omybott.exceptions.ResourceNotFoundException;
 import com.aryan.omybott.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;

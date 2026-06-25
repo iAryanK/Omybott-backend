@@ -1,9 +1,8 @@
 package com.aryan.omybott.handlers;
 
-import com.aryan.omybott.Entities.User;
+import com.aryan.omybott.entities.User;
 import com.aryan.omybott.repositories.UserRepository;
 import com.aryan.omybott.services.JwtService;
-import com.aryan.omybott.services.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

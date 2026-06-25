@@ -1,6 +1,6 @@
 package com.aryan.omybott.services;
 
-import com.aryan.omybott.Entities.User;
+import com.aryan.omybott.entities.User;
 import com.aryan.omybott.dto.request.LoginReqDTO;
 import com.aryan.omybott.dto.request.SignupReqDTO;
 import com.aryan.omybott.dto.response.LoginRespDTO;

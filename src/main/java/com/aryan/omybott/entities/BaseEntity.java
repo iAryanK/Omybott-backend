@@ -1,4 +1,4 @@
-package com.aryan.omybott.Entities;
+package com.aryan.omybott.entities;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
