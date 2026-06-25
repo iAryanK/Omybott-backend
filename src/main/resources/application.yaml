@@ -11,5 +11,22 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    user:
+      name: aryan
+      password: admin
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: testId
+            client-secret: testSecret
+jwt:
+  secretKey: qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapiuytrewq
+deploy:
+  env: development
+logging:
+  level:
+    ROOT: INFO

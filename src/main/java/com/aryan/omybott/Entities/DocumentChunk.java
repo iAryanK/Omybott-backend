@@ -34,7 +34,7 @@ public class DocumentChunk extends BaseEntity {
     @JdbcTypeCode(SqlTypes.JSON)
     private ChunkMetadata metadata;
 
-    @Column(nullable = false, columnDefinition = "vector(1536)")
+    @Column(nullable = false)
     private float[] embedding;
 
 }
