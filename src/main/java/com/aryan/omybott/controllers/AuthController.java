@@ -30,7 +30,7 @@ public class AuthController {
     public ResponseEntity<SignupRespDTO> signup(@RequestBody SignupReqDTO signupReqDTO, HttpServletResponse response) {
         SignupRespDTO signupRespDTO = authService.signUp(signupReqDTO);
 
-        Cookie cookie = new Cookie("refreshToken", signupRespDTO.accessToken());
+        Cookie cookie = new Cookie("refreshToken", signupRespDTO.getAccessToken());
         cookie.setHttpOnly(true);
         cookie.setSecure("production".equals(deployEnv));
         response.addCookie(cookie);
@@ -42,7 +42,7 @@ public class AuthController {
     public ResponseEntity<LoginRespDTO> login(@RequestBody LoginReqDTO loginReqDTO, HttpServletResponse response) {
         LoginRespDTO loginRespDTO = authService.login(loginReqDTO);
 
-        Cookie cookie = new Cookie("refreshToken", loginRespDTO.accessToken());
+        Cookie cookie = new Cookie("refreshToken", loginRespDTO.getAccessToken());
         cookie.setHttpOnly(true);
         cookie.setSecure("production".equals(deployEnv));
         response.addCookie(cookie);

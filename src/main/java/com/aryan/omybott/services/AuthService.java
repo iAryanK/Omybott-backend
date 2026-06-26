@@ -28,12 +28,12 @@ public class AuthService {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     public LoginRespDTO login(LoginReqDTO loginReqDTO) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginReqDTO.email(), loginReqDTO.password())
+                new UsernamePasswordAuthenticationToken(loginReqDTO.getEmail(), loginReqDTO.getPassword())
         );
 
         User userEntity = (User) authentication.getPrincipal();
@@ -44,19 +44,18 @@ public class AuthService {
     }
 
     public SignupRespDTO signUp(SignupReqDTO signupReqDTO) {
-        Optional<User> user = userRepository.findByEmail(signupReqDTO.email());
+        Optional<User> user = userRepository.findByEmail(signupReqDTO.getEmail());
         if (user.isPresent()) {
-            throw new BadCredentialsException("user with email "+signupReqDTO.email()+" already exists");
+            throw new BadCredentialsException("user with email "+signupReqDTO.getEmail()+" already exists");
         }
 
-        User toBeCreated = new User(signupReqDTO.name(), signupReqDTO.email(),
-                                signupReqDTO.password(), false, true);
-        toBeCreated.setPassword(passwordEncoder.encode(signupReqDTO.password()));
+        User toBeCreated = modelMapper.map(signupReqDTO, User.class);
+        toBeCreated.setPassword(passwordEncoder.encode(signupReqDTO.getPassword()));
 
         User savedUser = userRepository.save(toBeCreated);
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(signupReqDTO.email(), signupReqDTO.password())
+                new UsernamePasswordAuthenticationToken(signupReqDTO.getEmail(), signupReqDTO.getPassword())
         );
 
         User userEntity = (User) authentication.getPrincipal();

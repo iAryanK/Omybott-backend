@@ -1,8 +1,14 @@
 package com.aryan.omybott.dto.request;
 
-public record SignupReqDTO(
-        String name,
-        String email,
-        String password
-) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class SignupReqDTO {
+    private String name;
+    private String email;
+    private String password;
 }

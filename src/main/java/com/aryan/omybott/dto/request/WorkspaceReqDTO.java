@@ -1,4 +1,4 @@
-package com.aryan.omybott.dto.response;
+package com.aryan.omybott.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRespDTO {
-    private String accessToken;
-    private String refreshToken;
+public class WorkspaceReqDTO {
+    private String name;
+    private boolean active;
 }

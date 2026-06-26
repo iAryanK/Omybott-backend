@@ -13,4 +13,9 @@ A chronological record of the project’s journey, from idea to release.
 │  Setup both JWT & google auth and created APIs for login, signup,
 │  refresh etc.
 │
+●
+│  Phase 03 — Workspace and Bot APIs
+│  Created API endpoints related to workspace and bot setup.
+│  
+│
 ▼

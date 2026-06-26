@@ -1,9 +1,7 @@
 package com.aryan.omybott.entities;
 
 import com.aryan.omybott.enums.BotStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +33,10 @@ public class Bot extends BaseEntity {
     private String primaryColor = "#FF0000";
 
     private Set<String> allowedDomains = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "workspace_id", nullable = false)
+    private Workspace workspace;
 
     @Column(nullable = false)
     private BotStatus status = BotStatus.ACTIVE;
