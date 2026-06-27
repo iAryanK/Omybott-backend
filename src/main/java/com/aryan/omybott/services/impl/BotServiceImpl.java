@@ -5,6 +5,7 @@ import com.aryan.omybott.dto.response.BotRespDTO;
 import com.aryan.omybott.dto.response.ChatRespDTO;
 import com.aryan.omybott.entities.Bot;
 import com.aryan.omybott.entities.User;
+import com.aryan.omybott.enums.BotStatus;
 import com.aryan.omybott.exceptions.ResourceNotFoundException;
 import com.aryan.omybott.exceptions.UnauthorizedException;
 import com.aryan.omybott.repositories.BotRepository;
@@ -78,14 +79,26 @@ public class BotServiceImpl implements BotService {
         Bot bot = assertAuthorizedToBot(botId);
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String conversationId = botId + ":" + user.getId();
+        return generateChatResponse(bot, conversationId, message);
+    }
 
+    @Override
+    @Transactional(readOnly = true)
+    public ChatRespDTO getPublicChatResponse(Bot bot, String conversationMemoryId, String message) {
+        if (bot.getStatus() != BotStatus.ACTIVE) {
+            throw new IllegalArgumentException("Bot is not active");
+        }
+        return generateChatResponse(bot, conversationMemoryId, message);
+    }
+
+    private ChatRespDTO generateChatResponse(Bot bot, String conversationMemoryId, String message) {
         String systemPrompt = String.format("""
                 You are a support assistant. Your name is "%s".
                 Answer questions using only the provided knowledge base context.
                 If the answer is not in the context, say you do not know.
                 """, bot.getName());
 
-        documentChunkVectorStore.useBotScope(botId);
+        documentChunkVectorStore.useBotScope(bot.getId());
         try {
             String response = chatClient.prompt()
                     .system(systemPrompt)
@@ -99,7 +112,7 @@ public class BotServiceImpl implements BotService {
                                             .build())
                                     .build()
                     )
-                    .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
+                    .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationMemoryId))
                     .call()
                     .content();
 

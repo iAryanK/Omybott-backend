@@ -1,6 +1,7 @@
 package com.aryan.omybott.advices;
 
 import com.aryan.omybott.exceptions.ResourceNotFoundException;
+import com.aryan.omybott.exceptions.UnauthorizedException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,17 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ApiResponse<?>> handleUnauthorizedException(UnauthorizedException exception) {
+        ApiError apiError = ApiError
+                .builder()
+                .status(HttpStatus.UNAUTHORIZED)
+                .message(exception.getMessage())
+                .build();
+
+        return buildErrorResponseEntity(apiError);
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<?>> handleResourceNotFoundException(ResourceNotFoundException exception) {

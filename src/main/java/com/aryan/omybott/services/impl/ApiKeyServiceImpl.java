@@ -4,6 +4,8 @@ import com.aryan.omybott.dto.request.ApiKeyReqDTO;
 import com.aryan.omybott.dto.response.ApiKeyRespDTO;
 import com.aryan.omybott.entities.ApiKey;
 import com.aryan.omybott.entities.Bot;
+import com.aryan.omybott.enums.ApiKeyStatus;
+import com.aryan.omybott.exceptions.UnauthorizedException;
 import com.aryan.omybott.repositories.ApiKeyRepository;
 import com.aryan.omybott.services.ApiKeyService;
 import com.aryan.omybott.services.BotService;
@@ -14,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -22,15 +25,31 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ApiKeyServiceImpl implements ApiKeyService {
 
-    private final BotService botSerivce;
+    private final BotService botService;
     private final ApiKeyRepository apiKeyRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
+    public ApiKey validateAndGetApiKey(String rawKey) {
+        if (rawKey == null || rawKey.isBlank() || !rawKey.startsWith("omy_live_")) {
+            throw new UnauthorizedException("Invalid API key");
+        }
+
+        ApiKey apiKey = apiKeyRepository.findByStatus(ApiKeyStatus.ACTIVE).stream()
+                .filter(key -> passwordEncoder.matches(rawKey, key.getHashedKey()))
+                .findFirst()
+                .orElseThrow(() -> new UnauthorizedException("Invalid API key"));
+
+        apiKey.setLastUsedAt(Instant.now());
+        return apiKeyRepository.save(apiKey);
+    }
+
+    @Override
+    @Transactional
     public Map<String, String> createApiKey(UUID botId, ApiKeyReqDTO apiKeyReqDTO) {
-        Bot bot = botSerivce.assertAuthorizedToBot(botId);
+        Bot bot = botService.assertAuthorizedToBot(botId);
 
         String keyId = "omy_"+"live"+"_"+ RandomKeyGenerator.randomBase64(24);
 
@@ -44,7 +63,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
 
     @Override
     public List<ApiKeyRespDTO> getApiKeys(UUID botId) {
-        botSerivce.assertAuthorizedToBot(botId);
+        botService.assertAuthorizedToBot(botId);
 
         List<ApiKey> apiKeys = apiKeyRepository.findByBot_id(botId);
 
@@ -55,7 +74,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
 
     @Override
     public void deleteApiKey(UUID botId, UUID apiKeyId) {
-        botSerivce.assertAuthorizedToBot(botId);
+        botService.assertAuthorizedToBot(botId);
 
         apiKeyRepository.deleteById(apiKeyId);
     }

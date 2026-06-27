@@ -28,7 +28,7 @@ spring:
       base-url: http://192.168.29.214:11434
       chat:
         options:
-          model: qwen3:0.6b
+          model: gemma3:4b
       embedding:
         options:
           model: nomic-embed-text

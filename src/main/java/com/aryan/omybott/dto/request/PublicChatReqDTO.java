@@ -1,4 +1,4 @@
-package com.aryan.omybott.dto.response;
+package com.aryan.omybott.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,14 +9,10 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRespDTO {
-
-    private String response;
+public class PublicChatReqDTO {
 
     private UUID conversationId;
 
-    public ChatRespDTO(String response) {
-        this.response = response;
-    }
+    private String message;
 
 }

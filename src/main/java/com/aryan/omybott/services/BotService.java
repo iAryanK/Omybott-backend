@@ -16,6 +16,8 @@ public interface BotService {
 
     ChatRespDTO getChatResponse(UUID botId, String message);
 
+    ChatRespDTO getPublicChatResponse(Bot bot, String conversationMemoryId, String message);
+
     Bot assertAuthorizedToBot(UUID botId);
 
 }
