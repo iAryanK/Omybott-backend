@@ -31,6 +31,6 @@ public class ApiKey extends BaseEntity {
 
     private Instant revokedAt;
 
-    private ApiKeyStatus Status = ApiKeyStatus.ACTIVE;
+    private ApiKeyStatus status = ApiKeyStatus.ACTIVE;
 
 }
