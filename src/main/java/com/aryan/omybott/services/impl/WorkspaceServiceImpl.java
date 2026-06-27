@@ -90,7 +90,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         Workspace workspace = assertAuthorizedToWorkspace(workspaceId);
 
         Bot bot = modelMapper.map(botReqDTO, Bot.class);
-        bot.setWorkspace(workspace);    // TODO: Check if this is required or not
+        bot.setWorkspace(workspace);
 
         bot = botRepository.save(bot);
 

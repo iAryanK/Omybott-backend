@@ -1,10 +1,12 @@
 package com.aryan.omybott.entities;
 
+import com.aryan.omybott.util.PgVectorUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Array;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -27,20 +29,15 @@ public class DocumentChunk extends BaseEntity {
     @Column(nullable = false)
     private Integer chunkIndex;
 
+    @Column(nullable = false)
+    private Integer totalChunk;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(columnDefinition = "jsonb")
-    @JdbcTypeCode(SqlTypes.JSON)
-    private ChunkMetadata metadata;
-
+    @JdbcTypeCode(SqlTypes.VECTOR)
+    @Array(length = PgVectorUtils.EMBEDDING_DIMENSIONS)
     @Column(nullable = false)
     private float[] embedding;
 
 }
-
-record ChunkMetadata(
-        Integer pageNumber,
-        String sourceUrl,
-        String heading
-) {}

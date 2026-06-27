@@ -2,6 +2,7 @@ package com.aryan.omybott.controllers;
 
 import com.aryan.omybott.dto.request.BotReqDTO;
 import com.aryan.omybott.dto.response.BotRespDTO;
+import com.aryan.omybott.dto.response.ChatRespDTO;
 import com.aryan.omybott.services.BotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +34,12 @@ public class BotController {
     public ResponseEntity<Void> deleteBotById(@PathVariable UUID botId) {
         botService.deleteBotById(botId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{botId}/playground/chat")
+    public ResponseEntity<ChatRespDTO> chat(@PathVariable UUID botId,
+                                            @RequestBody String message) {
+        ChatRespDTO response = botService.getChatResponse(botId, message);
+        return ResponseEntity.ok(response);
     }
 }

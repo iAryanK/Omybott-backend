@@ -25,7 +25,7 @@ public class UserService implements UserDetailsService {
 
     public User getUserById(UUID userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User with email "+userId+" is not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User with id "+userId+" is not found"));
     }
 
 }

@@ -23,10 +23,22 @@ spring:
           google:
             client-id: testId
             client-secret: testSecret
+  ai:
+    ollama:
+      base-url: http://192.168.29.214:11434
+      chat:
+        options:
+          model: qwen3:0.6b
+      embedding:
+        options:
+          model: nomic-embed-text
+
 jwt:
   secretKey: qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapiuytrewq
 deploy:
   env: development
 logging:
   level:
-    ROOT: INFO
+    root: DEBUG
+    org.springframework.ai:
+      chat.client: DEBUG

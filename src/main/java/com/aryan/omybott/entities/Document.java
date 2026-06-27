@@ -27,18 +27,17 @@ public class Document extends BaseEntity {
     @Column(nullable = false, length = 30)
     private DocumentType fileType;
 
-    @Column(nullable = false, length = 1000)
-    private String storageKey;
-
     @Column(length = 100)
-    private String contentType;
+    private String mimeType;
 
+    @Column(nullable = false)
     private Long fileSizeBytes;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private DocumentStatus status = DocumentStatus.UPLOADED;
 
+    @Column(nullable = false)
     private Integer chunkCount = 0;
 
     @Column(length = 1000)
