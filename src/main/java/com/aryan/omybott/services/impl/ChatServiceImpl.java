@@ -16,7 +16,7 @@ import com.aryan.omybott.services.BotService;
 import com.aryan.omybott.services.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.net.URI;
 import java.time.Instant;
@@ -31,9 +31,9 @@ public class ChatServiceImpl implements ChatService {
     private final BotService botService;
     private final ConversationRepository conversationRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final TransactionTemplate transactionTemplate;
 
     @Override
-    @Transactional
     public ChatRespDTO getChatResponse(String apiKey, String origin, PublicChatReqDTO publicChatReqDTO) {
         if (publicChatReqDTO.getMessage() == null || publicChatReqDTO.getMessage().isBlank()) {
             throw new IllegalArgumentException("Message cannot be empty");
@@ -44,19 +44,26 @@ public class ChatServiceImpl implements ChatService {
 
         validateOrigin(bot, origin);
 
-        Conversation conversation = resolveConversation(bot, origin, publicChatReqDTO.getConversationId());
+        UUID conversationId = transactionTemplate.execute(status -> {
+            Conversation conversation = resolveConversation(bot, origin, publicChatReqDTO.getConversationId());
+            saveMessage(conversation, MessageRole.USER, publicChatReqDTO.getMessage());
+            conversation.setLastMessageAt(Instant.now());
+            conversationRepository.save(conversation);
+            return conversation.getId();
+        });
 
-        saveMessage(conversation, MessageRole.USER, publicChatReqDTO.getMessage());
-
-        String conversationMemoryId = bot.getId() + ":" + conversation.getId();
+        String conversationMemoryId = bot.getId() + ":" + conversationId;
         ChatRespDTO response = botService.getPublicChatResponse(bot, conversationMemoryId, publicChatReqDTO.getMessage());
 
-        saveMessage(conversation, MessageRole.ASSISTANT, response.getResponse());
+        transactionTemplate.executeWithoutResult(status -> {
+            Conversation conversation = conversationRepository.findById(conversationId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Conversation with id " + conversationId + " is not found"));
+            saveMessage(conversation, MessageRole.ASSISTANT, response.getResponse());
+            conversation.setLastMessageAt(Instant.now());
+            conversationRepository.save(conversation);
+        });
 
-        conversation.setLastMessageAt(Instant.now());
-        conversationRepository.save(conversation);
-
-        response.setConversationId(conversation.getId());
+        response.setConversationId(conversationId);
         return response;
     }
 
