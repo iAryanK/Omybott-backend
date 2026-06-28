@@ -69,7 +69,7 @@ public class AuthService {
         UUID userId = jwtService.getUserIdFromToken(refreshToken);
         User userEntity = userService.getUserById(userId);
 
-        String accessToken = jwtService.generateRefreshToken(userEntity);
+        String accessToken = jwtService.generateAccessToken(userEntity);
         return new LoginRespDTO(accessToken, refreshToken);
     }
 

@@ -29,4 +29,9 @@ public class BotRespDTO {
     private Set<String> allowedDomains;
 
     private BotStatus status;
+
+    private String createdAt;
+
+    private String updatedAt;
+    
 }

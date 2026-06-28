@@ -20,7 +20,7 @@ public interface WorkspaceService {
 
     void deleteWorkspaceById(UUID workspaceId);
 
-    BotReqDTO createBotByWorkspaceId(UUID workspaceId, BotReqDTO botReqDTO);
+    BotRespDTO createBotByWorkspaceId(UUID workspaceId, BotReqDTO botReqDTO);
 
     List<BotRespDTO> getAllBotsByWorkspaceId(UUID workspaceId);
 }

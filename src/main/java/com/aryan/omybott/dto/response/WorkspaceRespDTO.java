@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
+import java.time.Instant;
 
 @Data
 @NoArgsConstructor
@@ -15,4 +16,6 @@ public class WorkspaceRespDTO {
     private String name;
     private String slug;
     private boolean active;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

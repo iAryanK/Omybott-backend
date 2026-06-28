@@ -33,7 +33,7 @@ public class WorkspaceController {
     }
 
     @GetMapping("/{workspaceId}")
-    public ResponseEntity<WorkspaceRespDTO> getWorkspaceById(@RequestBody UUID workspaceId) {
+    public ResponseEntity<WorkspaceRespDTO> getWorkspaceById(@PathVariable UUID workspaceId) {
         WorkspaceRespDTO workspaceRespDTO = workspaceService.getWorkspaceById(workspaceId);
         return ResponseEntity.ok(workspaceRespDTO);
     }
@@ -52,9 +52,9 @@ public class WorkspaceController {
     }
 
     @PostMapping("/{workspaceId}/bots")
-    public ResponseEntity<BotReqDTO> createBotByWorkspaceId(@PathVariable UUID workspaceId,
+    public ResponseEntity<BotRespDTO> createBotByWorkspaceId(@PathVariable UUID workspaceId,
                                                             @RequestBody BotReqDTO botReqDTO) {
-        BotReqDTO createdBot = workspaceService.createBotByWorkspaceId(workspaceId, botReqDTO);
+        BotRespDTO createdBot = workspaceService.createBotByWorkspaceId(workspaceId, botReqDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBot);
     }
 

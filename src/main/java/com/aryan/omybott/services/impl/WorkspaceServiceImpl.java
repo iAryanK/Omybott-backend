@@ -86,7 +86,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     }
 
     @Override
-    public BotReqDTO createBotByWorkspaceId(UUID workspaceId, BotReqDTO botReqDTO) {
+    public BotRespDTO createBotByWorkspaceId(UUID workspaceId, BotReqDTO botReqDTO) {
         Workspace workspace = assertAuthorizedToWorkspace(workspaceId);
 
         Bot bot = modelMapper.map(botReqDTO, Bot.class);
@@ -94,7 +94,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
         bot = botRepository.save(bot);
 
-        return modelMapper.map(bot, BotReqDTO.class);
+        return modelMapper.map(bot, BotRespDTO.class);
     }
 
     @Override
