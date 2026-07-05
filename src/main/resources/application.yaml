@@ -2,9 +2,9 @@ spring:
   application:
     name: omybott
   datasource:
-    url: jdbc:postgresql://localhost:5432/omybottdb
-    username: postgres
-    password: admin
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/omybottdb}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin}
   jpa:
     show-sql: true
     hibernate:
@@ -21,22 +21,28 @@ spring:
       client:
         registration:
           google:
-            client-id: testId
-            client-secret: testSecret
+            client-id: ${GOOGLE_CLIENT_ID:testId}
+            client-secret: ${GOOGLE_CLIENT_SECRET:testSecret}
   ai:
-    ollama:
-      base-url: http://192.168.153.169:11434
+    model:
+      embedding: none
+    openai:
+      api-key: ${GROQ_API_KEY}
+      base-url: https://api.groq.com/openai/v1
       chat:
-        options:
-          model: gemma3:4b
-      embedding:
-        options:
-          model: nomic-embed-text
+        model: ${GROQ_CHAT_MODEL:llama-3.3-70b-versatile}
+        temperature: 0.7
+
+nomic:
+  embedding:
+    api-key: ${NOMIC_API_KEY}
+    model: ${NOMIC_EMBEDDING_MODEL:nomic-embed-text-v1.5}
+    dimensionality: 768
 
 jwt:
-  secretKey: qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapiuytrewq
+  secretKey: ${JWT_SECRET_KEY:qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapiuytrewq}
 deploy:
-  env: development
+  env: ${DEPLOY_ENV:development}
 logging:
   level:
     root: INFO
