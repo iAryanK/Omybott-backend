@@ -2,6 +2,8 @@ package com.aryan.omybott.config;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,5 +17,10 @@ public class AIConfig {
         return builder
                 .defaultAdvisors(new SimpleLoggerAdvisor())
                 .build();
+    }
+
+    @Bean
+    public ChatMemory chatMemory() {
+        return MessageWindowChatMemory.builder().build();
     }
 }
