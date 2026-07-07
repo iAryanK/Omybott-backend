@@ -39,10 +39,15 @@ nomic:
     model: ${NOMIC_EMBEDDING_MODEL:nomic-embed-text-v1.5}
     dimensionality: 768
 
-jwt:
-  secretKey: ${JWT_SECRET_KEY:qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapiuytrewq}
 deploy:
   env: ${DEPLOY_ENV:development}
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+
+jwt:
+  secretKey: ${JWT_SECRET_KEY:qwertyuiopasdfghjklzxcvbnmmnbvcxzlkjhgfdsapiuytrewq}
 logging:
   level:
     root: INFO

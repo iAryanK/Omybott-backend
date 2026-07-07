@@ -1,5 +1,6 @@
 package com.aryan.omybott.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -11,23 +12,27 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
+    @Value("${app.cors.allowed-origins}")
+    private List<String> allowedOrigins;
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration publicCors = new CorsConfiguration();
         publicCors.setAllowedOriginPatterns(List.of("*"));
         publicCors.setAllowedMethods(List.of("*"));
         publicCors.setAllowedHeaders(List.of("*"));
-        publicCors.setAllowCredentials(true);
+        publicCors.setAllowCredentials(false);
 
-        CorsConfiguration defaultCors = new CorsConfiguration();
-        defaultCors.setAllowedOrigins(List.of("http://localhost:3000"));
-        defaultCors.setAllowedMethods(List.of("*"));
-        defaultCors.setAllowedHeaders(List.of("*"));
-        defaultCors.setAllowCredentials(true);
+        CorsConfiguration appCors = new CorsConfiguration();
+        appCors.setAllowedOriginPatterns(allowedOrigins);
+        appCors.setAllowedMethods(List.of("*"));
+        appCors.setAllowedHeaders(List.of("*"));
+        appCors.setAllowCredentials(true);
+        appCors.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/public/**", publicCors);
-        source.registerCorsConfiguration("/**", defaultCors);
+        source.registerCorsConfiguration("/**", appCors);
 
         return source;
     }
