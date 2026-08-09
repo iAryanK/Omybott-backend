@@ -8,7 +8,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: false
@@ -27,7 +27,7 @@ spring:
     model:
       embedding: none
     openai:
-      api-key: ${GROQ_API_KEY}
+      api-key: ${GROQ_API_KEY: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}
       base-url: https://api.groq.com/openai/v1
       chat:
         model: ${GROQ_CHAT_MODEL:llama-3.3-70b-versatile}
@@ -35,7 +35,7 @@ spring:
 
 nomic:
   embedding:
-    api-key: ${NOMIC_API_KEY}
+    api-key: ${NOMIC_API_KEY:nk-dP84zWLopoDmBUdexuCsnCo3vkDiVNhGoFyAJ7A2IJI}
     model: ${NOMIC_EMBEDDING_MODEL:nomic-embed-text-v1.5}
     dimensionality: 768
 

@@ -9,13 +9,19 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "workspace")
+@Table(
+        name = "workspace",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_workspace_owner_slug",
+                columnNames = {"owner_id", "slug"}
+        )
+)
 public class Workspace extends BaseEntity {
 
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String slug;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -23,6 +29,7 @@ public class Workspace extends BaseEntity {
     private User owner;
 
     @Column(nullable = false)
-    private boolean active = true;
+    @Builder.Default
+    private Boolean active = true;
 
 }

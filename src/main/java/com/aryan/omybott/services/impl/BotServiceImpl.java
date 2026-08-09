@@ -52,11 +52,22 @@ public class BotServiceImpl implements BotService {
         Bot bot = assertAuthorizedToBot(botId);
 
         if (botReqDTO.getName() != null) {
-            bot.setName(botReqDTO.getName());
-            bot.setSlug(botReqDTO.getName().replace(" ", "_"));
+            String name = botReqDTO.getName().trim();
+            String slug = name.replace(" ", "_").toLowerCase();
+            if (!bot.getSlug().equals(slug)) {
+                assertUniqueBotSlugForWorkspace(bot.getWorkspace().getId(), slug);
+            }
+            bot.setName(name);
+            bot.setSlug(slug);
         }
         if (botReqDTO.getDescription() != null) bot.setDescription(botReqDTO.getDescription());
-        if (botReqDTO.getSlug() != null) bot.setSlug(botReqDTO.getSlug());
+        if (botReqDTO.getSlug() != null) {
+            String slug = botReqDTO.getSlug().trim().toLowerCase();
+            if (!bot.getSlug().equals(slug)) {
+                assertUniqueBotSlugForWorkspace(bot.getWorkspace().getId(), slug);
+                bot.setSlug(slug);
+            }
+        }
         if (botReqDTO.getWelcomeMessage() != null) bot.setWelcomeMessage(botReqDTO.getWelcomeMessage());
         if (botReqDTO.getPrimaryColor() != null) bot.setPrimaryColor(botReqDTO.getPrimaryColor());
         if (botReqDTO.getAllowedDomains() != null) bot.setAllowedDomains(botReqDTO.getAllowedDomains());
@@ -133,5 +144,11 @@ public class BotServiceImpl implements BotService {
         }
 
         return bot;
+    }
+
+    private void assertUniqueBotSlugForWorkspace(UUID workspaceId, String slug) {
+        if (botRepository.existsByWorkspace_IdAndSlug(workspaceId, slug)) {
+            throw new IllegalArgumentException("bot with slug \"" + slug + "\" already exists in this workspace");
+        }
     }
 }

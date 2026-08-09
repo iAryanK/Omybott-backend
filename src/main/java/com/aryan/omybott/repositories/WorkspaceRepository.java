@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface WorkspaceRepository extends JpaRepository<Workspace, UUID> {
     List<Workspace> findByOwner_Id(UUID id);
+
+    boolean existsByOwner_IdAndSlug(UUID ownerId, String slug);
 }

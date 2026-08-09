@@ -34,10 +34,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     @Override
     public WorkspaceRespDTO createWorkspace(WorkspaceReqDTO workspaceReqDTO) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String name = workspaceReqDTO.getName().trim();
+        String slug = name.replace(" ", "_").toLowerCase();
+        assertUniqueWorkspaceSlugForOwner(user.getId(), slug);
 
         Workspace workspace = Workspace.builder()
-                .name(workspaceReqDTO.getName())
-                .slug(workspaceReqDTO.getName().replace(" ", "_").trim())
+                .name(name)
+                .slug(slug)
                 .owner(user)
                 .active(workspaceReqDTO.isActive())
                 .build();
@@ -71,7 +74,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
         // Update only non-null fields
         if (workspaceReqDTO.getName() != null) {
-            workspace.setName(workspaceReqDTO.getName());
+            String name = workspaceReqDTO.getName().trim();
+            if (!workspace.getName().equals(name)) {
+                String slug = name.replace(" ", "_").toLowerCase();
+                assertUniqueWorkspaceSlugForOwner(workspace.getOwner().getId(), slug);
+                workspace.setName(name);
+                workspace.setSlug(slug);
+            }
         }
         workspace.setActive(true);
 
@@ -89,7 +98,15 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     public BotRespDTO createBotByWorkspaceId(UUID workspaceId, BotReqDTO botReqDTO) {
         Workspace workspace = assertAuthorizedToWorkspace(workspaceId);
 
+        String name = botReqDTO.getName().trim();
+        String slug = botReqDTO.getSlug() != null && !botReqDTO.getSlug().isBlank()
+                ? botReqDTO.getSlug().trim().toLowerCase()
+                : name.replace(" ", "_").toLowerCase();
+        assertUniqueBotSlugForWorkspace(workspaceId, slug);
+
         Bot bot = modelMapper.map(botReqDTO, Bot.class);
+        bot.setName(name);
+        bot.setSlug(slug);
         bot.setWorkspace(workspace);
 
         bot = botRepository.save(bot);
@@ -117,6 +134,18 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         }
 
         return workspace;
+    }
+
+    private void assertUniqueWorkspaceSlugForOwner(UUID ownerId, String slug) {
+        if (workspaceRepository.existsByOwner_IdAndSlug(ownerId, slug)) {
+            throw new IllegalArgumentException("workspace with slug \"" + slug + "\" already exists");
+        }
+    }
+
+    private void assertUniqueBotSlugForWorkspace(UUID workspaceId, String slug) {
+        if (botRepository.existsByWorkspace_IdAndSlug(workspaceId, slug)) {
+            throw new IllegalArgumentException("bot with slug \"" + slug + "\" already exists in this workspace");
+        }
     }
 
 }

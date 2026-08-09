@@ -15,7 +15,13 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "bot")
+@Table(
+        name = "bot",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_bot_workspace_slug",
+                columnNames = {"workspace_id", "slug"}
+        )
+)
 public class Bot extends BaseEntity {
 
     @Column(nullable = false)
@@ -23,7 +29,7 @@ public class Bot extends BaseEntity {
 
     private String description;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String slug;
 
     @Column(nullable = false)

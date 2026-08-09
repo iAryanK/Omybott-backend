@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface BotRepository extends JpaRepository<Bot, UUID> {
     List<Bot> findByWorkspace_Id(UUID workspaceId);
+
+    boolean existsByWorkspace_IdAndSlug(UUID workspaceId, String slug);
 }

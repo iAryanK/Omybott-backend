@@ -1,11 +1,12 @@
 package com.aryan.omybott.dto.response;
 
 import com.aryan.omybott.enums.BotStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
+import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,8 +31,10 @@ public class BotRespDTO {
 
     private BotStatus status;
 
-    private String createdAt;
+    @JsonFormat(pattern = "hh:mm:ss dd-MM-yyyy", timezone = "IST")
+    private Instant createdAt;
 
-    private String updatedAt;
-    
+    @JsonFormat(pattern = "hh:mm:ss dd-MM-yyyy", timezone = "IST")
+    private Instant updatedAt;
+
 }
