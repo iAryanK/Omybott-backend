@@ -26,8 +26,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
-    @Value("${deploy.env}")
+    @Value("${deploy.env:development}")
     private String deployEnv;
+
+    @Value("${app.cors.allowed-origins:http://localhost:3000}")
+    private String frontendUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -35,8 +38,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
         DefaultOAuth2User oAuth2User = (DefaultOAuth2User) token.getPrincipal();
-
-        log.info(oAuth2User.getAttribute("email"));
 
         String email = oAuth2User.getAttribute("email");
         User userEntity = userRepository.findByEmail(email).orElse(null);
@@ -58,10 +59,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         cookie.setSecure("production".equals(deployEnv));
         response.addCookie(cookie);
 
-        String frontEndUrl = "http://localhost:8080/home.html?token="+accessToken;
+        String baseUrl = frontendUrl.split(",")[0].trim();
+        String frontEndUrl = baseUrl + "/auth/oauth-callback?token=" + accessToken + "&refreshToken=" + refreshToken;
 
         getRedirectStrategy().sendRedirect(request, response, frontEndUrl);
-        // OR
-        // response.sendRedirect(frontEndUrl);
     }
 }
