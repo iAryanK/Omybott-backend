@@ -21,7 +21,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
 
     @Override
     public @Nullable Object beforeBodyWrite(@Nullable Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        List<String> allowedRoutes = List.of("/api/v1/v3/api-docs", "/api/v1/swagger-ui", "/api/v1/actuator");
+        List<String> allowedRoutes = List.of("/v3/api-docs", "/swagger-ui", "/actuator/health");
 
         boolean isAllowed = allowedRoutes
                 .stream()

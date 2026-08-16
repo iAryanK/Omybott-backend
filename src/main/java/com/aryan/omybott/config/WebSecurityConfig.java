@@ -25,7 +25,7 @@ public class WebSecurityConfig {
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     private static final String[] publicRoutes = {
-            "/swagger-ui/**", "/v3/api-docs/**", "/auth/**", "/public/**"
+            "/swagger-ui/**", "/v3/api-docs/**", "/actuator/**", "/auth/**", "/public/**"
     };
 
     @Bean
