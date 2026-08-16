@@ -1,9 +1,9 @@
 <div align="center">
 
   <!-- 📷 ADD YOUR LOGO HERE -->
-  <img src="https://via.placeholder.com/150/000000/FFFFFF?text=Omybott" alt="Omybott Logo" width="150" height="150" style="border-radius: 20px; margin-bottom: 20px;" />
+  <img src="./src/main/resources/static/omybott_dark.png" alt="Omybott Logo" width="150" height="70" style="border-radius: 20px; margin-bottom: 20px;" />
 
-  # ⚙️ Omybott Backend
+  # Omybott (backend)
 
   <p>
     <strong>The robust, secure, and highly-scalable Java engine powering the Omybott multi-tenant RAG platform.</strong>
@@ -15,7 +15,6 @@
     <a href="#-getting-started">Getting Started</a>
   </p>
 
-  <!-- 🎥 ADD YOUR ARCHITECTURE DIAGRAM OR HERO IMAGE HERE -->
   <a href="#">
     <img src="https://via.placeholder.com/800x450/1a1a1a/ffffff?text=Add+Your+Architecture+Diagram+Here" alt="Omybott Architecture" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" />
   </a>
@@ -29,6 +28,12 @@ The backend service for Omybott handles complex document ingestion, vector embed
 ---
 
 ## 🏗️ Architecture & Routes
+
+### 🗄️ Database Schema
+
+The following ER Diagram maps out the PostgreSQL schema, including the pgvector implementation for document chunks:
+
+![Omybott ER Diagram](src/main/resources/static/er-diagram.png)
 
 Omybott's backend exposes a comprehensive set of RESTful endpoints to support its multi-tenant structure and AI functionalities:
 
@@ -80,12 +85,6 @@ Our backend is built on a cutting-edge, enterprise-grade Java stack:
 - Maven
 - PostgreSQL database (with `pgvector` extension enabled)
 - Docker (optional, but highly recommended for quick database setup)
-
-### 🗄️ Database Schema
-
-The following ER Diagram maps out the PostgreSQL schema, including the pgvector implementation for document chunks:
-
-![Omybott ER Diagram](src/main/resources/static/er-diagram.png)
 
 ### 🐳 Docker & Deployment Setup
 We provide a **`docker-compose.yml`** to instantly spin up the required PostgreSQL database equipped with the `pgvector` extension.
