@@ -15,9 +15,12 @@
     <a href="#-getting-started">Getting Started</a>
   </p>
 
-  <a href="#">
-    <img src="./src/main/resources/static/omybott.png" alt="Omybott Demo" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" />
-  </a>
+  [![Watch the video](https://img.youtube.com/vi/NwieQJ3P3k8/maxresdefault.jpg)](https://www.youtube.com/watch?v=NwieQJ3P3k8)
+  <div align="center">
+    <p>
+      <strong>Watch on youtube</strong>
+    </p>
+  </div>
 </div>
 
 <br/>
